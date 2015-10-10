@@ -1,0 +1,41 @@
+
+Elevator control system
+
+Starting elevator on 8080: server.py 127.0.0.1:8080
+Starting elevator on 8081: server.py 127.0.0.1:8081
+
+Client to query status or request a pickup
+
+ElevatorID is the ipaddress it has started on like '127.0.0.1:8080'
+
+python libraries: 
+	gevent
+	zerorpc
+	kazoo
+
+Note: pickup request is by calling request() method which has two parameters
+parameter1: request floor with direction 
+parameter2: destination floor
+
+example: 	store.request(-15,10) pickup floor is 15, direction is down and destination floor 10
+			store.request(10,20) pickup floor is 10, direction is up and destination floor 20
+Note: request floor is either -ve or +ve based on direction, destination floor is always positive
+
+Leader Election among elevators are as per http://zookeeper.apache.org/doc/trunk/recipes.html
+
+Client gets the leader info from zookeeper to query the status of elevators or send request.
+
+Leader (of elevators) receives requests and distribute them to other available elevators. 
+
+
+Conclusion:
+ECS is highly available and scalable. Load is distributed among other available elevators.
+Note: 	Current logic to distribute requests is random.
+		Elevator completes the first request before the next request is served.
+		Elevator requests are added to the queue
+		
+Further work: 
+		1) Change logic to distribute pickup requests based on elevator current position
+		2) pickup at floors which are on the way to previous request's destination floor
+		3) store a copy of elevator 'A' requests on elevator 'B' as backup and redistribute them on failure of elevator 'A'
+		4) Leader to send a signal to other elevators when a new elevator is added, up and running to redistribute the load
