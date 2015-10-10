@@ -5,6 +5,7 @@ Starting elevator on 8080: server.py 127.0.0.1:8080
 Starting elevator on 8081: server.py 127.0.0.1:8081
 
 Client to query status or request a pickup
+Elevator has time simulation step() function
 
 ElevatorID is the ipaddress it has started on like '127.0.0.1:8080'
 
